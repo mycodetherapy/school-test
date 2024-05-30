@@ -16,6 +16,7 @@ export const QuestionCard: React.FC = () => {
     control,
     handleSubmit,
     reset,
+    watch,
     formState: { isDirty },
   } = useForm<FormData>({
     defaultValues: {
@@ -31,6 +32,7 @@ export const QuestionCard: React.FC = () => {
     (state: RootState) => state.quiz.answers.length
   );
   const defaultValue = savedAnswers[currentQuestionIndex] || "";
+  const watchedAnswers = watch("answer");
   const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = (data: FormData) => {
@@ -39,17 +41,23 @@ export const QuestionCard: React.FC = () => {
     );
     setTimeout(() => {
       dispatch(nextQuestion());
-      reset();
-    }, 500);
+      if (currentQuestion.type !== "text") {
+        reset();
+      }
+    }, 300);
   };
 
   if (questions.length === totalQuestions) {
-    return <div className="test-complete">Тест пройден</div>;
+    return (
+      <div className="card card_finish">
+        Поздравляем! <br /> Прохождение теста завершено.
+      </div>
+    );
   }
 
   return (
     <div className="card">
-      <div className="card__question">{currentQuestion.question}</div>
+      <h2 className="card__question">{currentQuestion.question}</h2>
       <form className="card__form" onSubmit={handleSubmit(onSubmit)}>
         {currentQuestion.type === "single" &&
           currentQuestion.options &&
@@ -87,30 +95,32 @@ export const QuestionCard: React.FC = () => {
                 name="answer"
                 control={control}
                 defaultValue={savedAnswers[currentQuestionIndex]}
-                render={({ field }) => (
-                  <input
-                    type="checkbox"
-                    className="card__form__answers__answer"
-                    value={option}
-                    defaultValue={defaultValue}
-                    disabled={!!defaultValue}
-                    checked={
-                      (Array.isArray(field.value) &&
-                        field.value.includes(option)) ||
-                      (Array.isArray(savedAnswers[currentQuestionIndex]) &&
-                        savedAnswers[currentQuestionIndex].includes(option))
-                    }
-                    onChange={(e) => {
-                      const newValue = [...((field.value as string[]) ?? [])];
-                      if (e.target.checked) {
-                        newValue.push(option);
-                      } else {
-                        newValue.splice(newValue.indexOf(option), 1);
+                render={({ field }) => {
+                  return (
+                    <input
+                      type="checkbox"
+                      className="card__form__answers__answer"
+                      value={option}
+                      defaultValue={defaultValue}
+                      disabled={!!defaultValue}
+                      checked={
+                        (Array.isArray(field.value) &&
+                          field.value.includes(option)) ||
+                        (Array.isArray(savedAnswers[currentQuestionIndex]) &&
+                          savedAnswers[currentQuestionIndex].includes(option))
                       }
-                      field.onChange(newValue);
-                    }}
-                  />
-                )}
+                      onChange={(e) => {
+                        const newValue = [...((field.value as string[]) ?? [])];
+                        if (e.target.checked) {
+                          newValue.push(option);
+                        } else {
+                          newValue.splice(newValue.indexOf(option), 1);
+                        }
+                        field.onChange(newValue);
+                      }}
+                    />
+                  );
+                }}
               />
               {option}
             </label>
@@ -133,12 +143,18 @@ export const QuestionCard: React.FC = () => {
         )}
         <button
           className="card__form__button-submit"
-          disabled={!!defaultValue || !isDirty}
           type="submit"
+          disabled={
+            !!defaultValue ||
+            !isDirty ||
+            (currentQuestion.type === "multiple" &&
+              (!watchedAnswers || watchedAnswers.length === 0))
+          }
         >
           Ответить
         </button>
       </form>
+
       <div className="card__nav-buttons">
         <button
           className="card__nav-buttons__button card__nav-buttons__button_left"
@@ -158,6 +174,7 @@ export const QuestionCard: React.FC = () => {
           disabled={!defaultValue}
         />
       </div>
+      
     </div>
   );
 };
