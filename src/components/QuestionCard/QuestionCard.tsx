@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import "./QuestionCard.css";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
@@ -8,21 +9,28 @@ import {
   previousQuestion,
 } from "../../redux/quizSlice";
 import { questions } from "../../data/questions";
-import { FormData, Question } from "../../types";
+import { FormData } from "../../types";
 
 export const QuestionCard: React.FC = () => {
-  const { control, handleSubmit, reset, formState: { isDirty } } = useForm<FormData>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = useForm<FormData>({
     defaultValues: {
-      answer: '',
-    }
+      answer: "",
+    },
   });
   const currentQuestionIndex = useSelector(
     (state: RootState) => state.quiz.currentQuestion
   );
   const currentQuestion = questions[currentQuestionIndex];
   const savedAnswers = useSelector((state: RootState) => state.quiz.answers);
-  const totalQuestions = useSelector((state: RootState) => state.quiz.answers.length);
-  const defaultValue = savedAnswers[currentQuestionIndex] || ''
+  const totalQuestions = useSelector(
+    (state: RootState) => state.quiz.answers.length
+  );
+  const defaultValue = savedAnswers[currentQuestionIndex] || "";
   const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = (data: FormData) => {
@@ -35,26 +43,25 @@ export const QuestionCard: React.FC = () => {
     }, 500);
   };
 
-  if (questions.length === totalQuestions ) {
+  if (questions.length === totalQuestions) {
     return <div className="test-complete">Тест пройден</div>;
   }
 
   return (
-    <div className="question-card">
-      <div className="question">{currentQuestion.question}</div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="card">
+      <div className="card__question">{currentQuestion.question}</div>
+      <form className="card__form" onSubmit={handleSubmit(onSubmit)}>
         {currentQuestion.type === "single" &&
           currentQuestion.options &&
           currentQuestion.options.map((option, index) => (
-            <label key={index}>
+            <label key={index} className="card__form__answers">
               <Controller
                 name="answer"
                 control={control}
                 render={({ field, fieldState, formState }) => {
-                 
-
                   return (
                     <input
+                      className="card__form__answers__answer"
                       type="radio"
                       value={option}
                       defaultValue={defaultValue}
@@ -63,10 +70,7 @@ export const QuestionCard: React.FC = () => {
                         field.value === option ||
                         savedAnswers[currentQuestionIndex] === option
                       }
-                      onChange={(e) => 
-                        field.onChange(e.target.value)
-                        
-                      }
+                      onChange={(e) => field.onChange(e.target.value)}
                     />
                   );
                 }}
@@ -78,7 +82,7 @@ export const QuestionCard: React.FC = () => {
         {currentQuestion.type === "multiple" &&
           currentQuestion.options &&
           currentQuestion.options.map((option, index) => (
-            <label key={index}>
+            <label key={index} className="card__form__answers">
               <Controller
                 name="answer"
                 control={control}
@@ -86,6 +90,7 @@ export const QuestionCard: React.FC = () => {
                 render={({ field }) => (
                   <input
                     type="checkbox"
+                    className="card__form__answers__answer"
                     value={option}
                     defaultValue={defaultValue}
                     disabled={!!defaultValue}
@@ -119,31 +124,40 @@ export const QuestionCard: React.FC = () => {
             disabled={!!defaultValue}
             render={({ field }) => (
               <textarea
+                className="card__form__answers__textarea"
+                maxLength={512}
                 {...field}
               />
             )}
           />
         )}
-        <button disabled={!!defaultValue || !isDirty  } type="submit">Ответить</button>
+        <button
+          className="card__form__button-submit"
+          disabled={!!defaultValue || !isDirty}
+          type="submit"
+        >
+          Ответить
+        </button>
       </form>
-      <button
-        onClick={() => {
-          dispatch(previousQuestion());
-          reset()}
-        }
-        disabled={currentQuestionIndex === 0}
-      >
-        Назад
-      </button>
-      
-      <button
-        onClick={() => {dispatch(nextQuestion());
-          reset()
-        }}
-        disabled={!defaultValue}
-      >
-        Вперед
-      </button>
+      <div className="card__nav-buttons">
+        <button
+          className="card__nav-buttons__button card__nav-buttons__button_left"
+          onClick={() => {
+            dispatch(previousQuestion());
+            reset();
+          }}
+          disabled={currentQuestionIndex === 0}
+        />
+
+        <button
+          className="card__nav-buttons__button card__nav-buttons__button_right"
+          onClick={() => {
+            dispatch(nextQuestion());
+            reset();
+          }}
+          disabled={!defaultValue}
+        />
+      </div>
     </div>
   );
 };

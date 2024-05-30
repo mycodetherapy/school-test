@@ -1,0 +1,85 @@
+.card {
+  border: 2px solid #666;
+  border-radius: 10px;
+  padding: 36px;
+  font-weight: 600;
+  margin: 20px;
+}
+
+.card__question {
+  text-align: center;
+  font-size: 18px;
+  padding-bottom: 30px;
+  height: 80px;
+}
+
+.card__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 300px;
+}
+
+.card__form__answers {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.card__form__answers__answer {
+  margin-right: 16px;
+}
+
+.card__form__answers__textarea {
+  font-size: 16px;
+  padding: 6px 16px;
+  max-width: 98%;
+  min-width: 80%;
+  min-height: 100px;
+  max-height: 150px;
+  border-radius: 6px;
+}
+
+.card__form__button-submit {
+  font-size: 15px;
+  font-weight: 600;
+  width: 110px;
+  padding: 10px;
+  margin: 26px 0;
+  border-radius: 4px;
+  align-self: center;
+  cursor: pointer;
+}
+
+.card__form__button-submit:hover {
+  opacity: 0.6;
+  transition: 0.3s;
+}
+
+.card__nav-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card__nav-buttons__button {
+  background-repeat: no-repeat;
+  background-size: 36px 36px;
+  padding: 26px;
+  background-position: center;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #ccc;
+}
+
+.card__nav-buttons__button_right {
+  background-image: url("../../images/navigate-right.svg");
+}
+
+.card__nav-buttons__button_left {
+  background-image: url("../../images/navigate-left.svg");
+}
+
+.card__nav-buttons__button:hover {
+  opacity: 0.6;
+  transition: 0.3s;
+}
