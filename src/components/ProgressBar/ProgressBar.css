@@ -1,15 +1,49 @@
-.progress-bar {
-    width: 100%;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  
-  .progress {
-    height: 20px;
-    background-color: #76c7c0;
-    width: 0;
-    transition: width 0.5s ease;
-  }
-  
+.progress {
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.progress__fragment {
+  height: 26px;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #666;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.progress__fragment_solved {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #addfad;
+}
+
+.progress__fragment_unsolved {
+  opacity: 0.5;
+}
+
+.progress__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
+  z-index: -1;
+  box-sizing: border-box;
+}
+
+.progress__fragment.active {
+  background-color: #009b77;
+  color: #fff;
+}
+
+.progress__fragment:hover {
+  background-color: #009b77;
+  color: #fff;
+}

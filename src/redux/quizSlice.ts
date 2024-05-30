@@ -1,21 +1,22 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Ansver } from "../types";
 
 interface QuizState {
   currentQuestion: number;
-  answers: (string | string[])[]; //Answer[];
+  answers: Ansver[];
 }
 
 const initialState: QuizState = {
   currentQuestion: 0,
-  answers: [],//Array(10).fill(null),
+  answers: [],
 };
 
 const quizSlice = createSlice({
-  name: 'quiz',
+  name: "quiz",
   initialState,
   reducers: {
     nextQuestion: (state) => {
-      if (state.currentQuestion < 9) {
+      if (state.currentQuestion < state.answers.length) {
         state.currentQuestion += 1;
       }
     },
@@ -24,12 +25,28 @@ const quizSlice = createSlice({
         state.currentQuestion -= 1;
       }
     },
-    answerQuestion: (state, action: PayloadAction<{ index: number; answer: string | string[] }>) => {
+    answerQuestion: (
+      state,
+      action: PayloadAction<{ index: number; answer: string | string[] }>
+    ) => {
       state.answers[action.payload.index] = action.payload.answer;
+    },
+    setCurrentQuestion(state, action: PayloadAction<number>) {
+      if (
+        action.payload <= state.currentQuestion ||
+        state.answers[action.payload] !== null
+      ) {
+        state.currentQuestion = action.payload;
+      }
     },
   },
 });
 
-export const { nextQuestion, previousQuestion, answerQuestion } = quizSlice.actions;
+export const {
+  nextQuestion,
+  previousQuestion,
+  answerQuestion,
+  setCurrentQuestion,
+} = quizSlice.actions;
 
 export default quizSlice.reducer;
