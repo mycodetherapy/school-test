@@ -7,7 +7,6 @@ import {
   answerQuestion,
   nextQuestion,
   previousQuestion,
-  resetTimer,
 } from "../../redux/quizSlice";
 import { questions } from "../../data/questions";
 import { FormData } from "../../types";
