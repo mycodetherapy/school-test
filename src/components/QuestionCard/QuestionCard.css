@@ -5,7 +5,8 @@
   font-weight: 600;
   margin: 20px;
   background-color: #e5e4e2;
-  opacity: 0.9;
+  opacity: 0.8;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5); 
 }
 
 .card_finish {
@@ -19,6 +20,7 @@
   margin: 0;
   padding-bottom: 26px;
   min-height: 60px;
+  text-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .card__form {
@@ -64,6 +66,7 @@
   border-radius: 4px;
   align-self: center;
   cursor: pointer;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .card__form__button-submit:hover {
@@ -84,6 +87,7 @@
   border-radius: 8px;
   cursor: pointer;
   background-color: #addfad;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .card__nav-buttons__button_right {

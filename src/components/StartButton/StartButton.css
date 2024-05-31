@@ -9,6 +9,7 @@
   padding: 10px 18px;
   border-radius: 4px;
   cursor: pointer;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .start__button:hover {
