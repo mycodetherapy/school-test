@@ -1,0 +1,17 @@
+.start {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.start__button {
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.start__button:hover {
+  opacity: 0.6;
+  transition: 0.3s;
+}

@@ -4,11 +4,15 @@ import { Ansver } from "../types";
 interface QuizState {
   currentQuestion: number;
   answers: Ansver[];
+  timeUp: boolean;
+  hasStarted: boolean;
 }
 
 const initialState: QuizState = {
   currentQuestion: 0,
   answers: [],
+  timeUp: false,
+  hasStarted: false,
 };
 
 const quizSlice = createSlice({
@@ -39,6 +43,12 @@ const quizSlice = createSlice({
         state.currentQuestion = action.payload;
       }
     },
+    setTimeUp(state) {
+      state.timeUp = true;
+    },
+    startQuiz(state) {
+      state.hasStarted = true;
+    }
   },
 });
 
@@ -47,6 +57,8 @@ export const {
   previousQuestion,
   answerQuestion,
   setCurrentQuestion,
+  setTimeUp,
+  startQuiz,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;

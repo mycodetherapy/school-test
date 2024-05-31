@@ -6,14 +6,17 @@ import { setCurrentQuestion } from "../../redux/quizSlice";
 import { questions } from "../../data/questions";
 
 export const ProgressBar: React.FC = () => {
-  const arrIndexCorrect = 1
+  const arrIndexCorrect = 1;
   const totalQuestions =
-    useSelector((state: RootState) => state.quiz.answers.length) + arrIndexCorrect;
+    useSelector((state: RootState) => state.quiz.answers.length) +
+    arrIndexCorrect;
   const currentQuestionIndex = useSelector(
     (state: RootState) => state.quiz.currentQuestion
   );
   const isFinish = totalQuestions === questions.length + arrIndexCorrect;
+  const started = useSelector((state: RootState) => state.quiz.hasStarted);
   const fragmentWidth = `${100 / questions.length}%`;
+  const timeUp = useSelector((state: RootState) => state.quiz.timeUp);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleClick = (index: number) => {
@@ -21,7 +24,11 @@ export const ProgressBar: React.FC = () => {
   };
 
   return (
-    <section className={`progress ${isFinish ? 'progress_hidden' : ''}`}>
+    <section
+      className={`progress ${
+        isFinish || !started || timeUp ? "progress_hidden" : ""
+      }`}
+    >
       <div className="progress__backdrop">
         {Array.from(
           questions.map((item, index) => (

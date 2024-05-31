@@ -33,6 +33,8 @@ export const QuestionCard: React.FC = () => {
   );
   const defaultValue = savedAnswers[currentQuestionIndex] || "";
   const watchedAnswers = watch("answer");
+  const started = useSelector((state: RootState) => state.quiz.hasStarted);
+  const timeUp = useSelector((state: RootState) => state.quiz.timeUp);
   const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = (data: FormData) => {
@@ -44,18 +46,20 @@ export const QuestionCard: React.FC = () => {
       if (currentQuestion.type !== "text") {
         reset();
       }
-    }, 300);
+    }, 200);
   };
 
-  if (questions.length === totalQuestions) {
+  if (questions.length === totalQuestions || timeUp) {
     return (
       <div className="card card_finish">
-        Поздравляем! <br /> Прохождение теста завершено.
+        {timeUp
+          ? "Время истекло!"
+          : "Поздравляем! Прохождение теста завершено."}
       </div>
     );
   }
 
-  return (
+  return !started ? null : (
     <div className="card">
       <h2 className="card__question">{currentQuestion.question}</h2>
       <form className="card__form" onSubmit={handleSubmit(onSubmit)}>
@@ -174,7 +178,6 @@ export const QuestionCard: React.FC = () => {
           disabled={!defaultValue}
         />
       </div>
-      
     </div>
   );
 };

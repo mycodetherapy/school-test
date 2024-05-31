@@ -1,0 +1,9 @@
+.timer {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 18px;
+}
+
+.timer_hidden {
+  display: none;
+}

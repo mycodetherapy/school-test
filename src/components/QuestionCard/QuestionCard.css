@@ -17,8 +17,8 @@
   font-size: 18px;
   font-weight: 600;
   margin: 0;
-  padding-bottom: 30px;
-  height: 80px;
+  padding-bottom: 26px;
+  min-height: 60px;
 }
 
 .card__form {
@@ -26,7 +26,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  min-height: 300px;
+  min-height: 260px;
 }
 
 .card__form__answers {

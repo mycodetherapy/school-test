@@ -1,9 +1,9 @@
 .header {
-
+  margin: 0;
 }
 .header__title {
-    text-align: center;
-    font-weight: 600;
-    margin: 0;
-    margin-bottom: 16px;
+  text-align: center;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 16px;
 }
