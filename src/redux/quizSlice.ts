@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Ansver } from "../types";
+import { TIME_LIMIT } from "../constants";
 
-interface QuizState {
+export interface QuizState {
   currentQuestion: number;
   answers: Ansver[];
   timeUp: boolean;
   hasStarted: boolean;
+  remainingTime: number;
 }
 
 const initialState: QuizState = {
@@ -13,6 +15,7 @@ const initialState: QuizState = {
   answers: [],
   timeUp: false,
   hasStarted: false,
+  remainingTime: TIME_LIMIT,
 };
 
 const quizSlice = createSlice({
@@ -31,7 +34,7 @@ const quizSlice = createSlice({
     },
     answerQuestion: (
       state,
-      action: PayloadAction<{ index: number; answer: string | string[] }>
+      action: PayloadAction<{ index: number; answer: Ansver }>
     ) => {
       state.answers[action.payload.index] = action.payload.answer;
     },
@@ -48,7 +51,13 @@ const quizSlice = createSlice({
     },
     startQuiz(state) {
       state.hasStarted = true;
-    }
+    },
+    setTimeLeft(state, action: PayloadAction<number>) {
+      state.remainingTime = action.payload;
+    },
+    resetTimer(state) {
+      state.remainingTime = 0;
+    },
   },
 });
 
@@ -59,6 +68,8 @@ export const {
   setCurrentQuestion,
   setTimeUp,
   startQuiz,
+  setTimeLeft,
+  resetTimer,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;
