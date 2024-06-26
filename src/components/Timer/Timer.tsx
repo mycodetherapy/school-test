@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import "./Timer.css";
 import { useDispatch, useSelector } from "react-redux";
-import { resetTimer, setTimeLeft, setTimeUp } from "../../redux/quizSlice";
+import { setRemainingTime, setTimeUp } from "../../redux/quizSlice";
 import { AppDispatch, RootState } from "../../redux/store";
 import { StartButton } from "../StartButton/StartButton";
 import { questions } from "../../data/questions";
@@ -14,29 +14,32 @@ export const Timer: React.FC = () => {
     useSelector((state: RootState) => state.quiz.answers.length) +
     arrIndexCorrect;
   const isFinish = totalQuestions === questions.length + arrIndexCorrect;
-  const timeLeft = useSelector((state: RootState) => state.quiz.remainingTime);
+  const remainingTime = useSelector(
+    (state: RootState) => state.quiz.remainingTime
+  );
 
   useEffect(() => {
-    let timerId: NodeJS.Timeout;
+    if (hasStarted) {
+      const endTime = Math.floor(Date.now() / 1000) + remainingTime;
+      localStorage.setItem("endTime", endTime.toString());
 
-    if (hasStarted && timeLeft > 0) {
-      timerId = setInterval(() => {
-        dispatch(setTimeLeft(timeLeft - 1));
+      const interval = setInterval(() => {
+        const currentTime = Math.floor(Date.now() / 1000);
+        const newRemainingTime = endTime - currentTime;
+        if (newRemainingTime <= 0) {
+          clearInterval(interval);
+          dispatch(setTimeUp());
+        }
+        dispatch(setRemainingTime(Math.max(0, newRemainingTime)));
       }, 1000);
-    }
 
-    if (timeLeft <= 0) {
-      dispatch(setTimeUp());
-    }
+      if (isFinish) {
+        clearInterval(interval);
+      }
 
-    if(isFinish) {
-       dispatch(resetTimer())
+      return () => clearInterval(interval);
     }
-
-    return () => { 
-      if (timerId) clearInterval(timerId);
-    };
-  }, [dispatch, hasStarted, timeLeft]);
+  }, [remainingTime, hasStarted, isFinish]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -48,7 +51,7 @@ export const Timer: React.FC = () => {
     <StartButton />
   ) : (
     <div className={`timer ${isFinish ? "timer_hidden" : ""}`}>
-      Время осталось: {formatTime(timeLeft)}
+      Время осталось: {formatTime(remainingTime)}
     </div>
   );
 };

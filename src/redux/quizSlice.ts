@@ -52,11 +52,8 @@ const quizSlice = createSlice({
     startQuiz(state) {
       state.hasStarted = true;
     },
-    setTimeLeft(state, action: PayloadAction<number>) {
+    setRemainingTime(state, action: PayloadAction<number>) {
       state.remainingTime = action.payload;
-    },
-    resetTimer(state) {
-      state.remainingTime = 0;
     },
   },
 });
@@ -68,8 +65,7 @@ export const {
   setCurrentQuestion,
   setTimeUp,
   startQuiz,
-  setTimeLeft,
-  resetTimer,
+  setRemainingTime,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;
