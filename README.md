@@ -1,4 +1,4 @@
-# todo-list-redux [Try the project](https://mycodetherapy.github.io/school-test/)
+# [Try the project](https://mycodetherapy.github.io/school-test/)
 
 ## This is a school chemistry test. Executed on React/Redux with saving in local storage.
 
